@@ -5,17 +5,11 @@ This project, developed as part of a hackathon, is a real-time network traffic v
 Features
 Real-time Packet Capture: Captures network packets flowing through a selected network interface.
 
-Dynamic Interface Selection: Allows users to choose which network adapter to monitor from a list of available interfaces.
-
 Protocol Distribution: Visualizes the distribution of different network protocols (e.g., TCP, UDP, ICMP, ARP) using a pie chart.
 
 Top Connection Flows: Identifies and displays the top network connections by data volume.
 
-Basic Filtering: Includes a basic filter to show only specific types of packets (e.g., TCP only).
-
 Live Packet Table: Displays a table of the most recently captured packets with details like timestamp, source/destination IPs, protocol, and size.
-
-Start/Stop Functionality: Provides controls to initiate and pause packet capturing.
 
 Administrator/Root Privilege Check: Ensures the application is run with necessary permissions for packet sniffing.
 
