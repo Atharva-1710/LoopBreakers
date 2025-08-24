@@ -47,32 +47,27 @@ LoopBreakers-P4/
 Installation and Setup
 Clone the Repository:
 
-git clone https://github.com/your_username/LoopBreakers-P4.git
+git clone https://github.com/Atharva-1710/LoopBreakers-P4.git
 cd LoopBreakers-P4
 
-Create a Virtual Environment (Recommended):
-
-python -m venv venv
 # On Windows:
-.\venv\Scripts\activate
+
+Python should be Installed
 
 Install Dependencies:
 
 pip install -r requirements.txt
-
-(Ensure requirements.txt contains scapy , pandas , numpy , rich if you choose to use it)
 
 Important: Root/Administrator Privileges:
 Packet capturing requires elevated privileges. You must run the application with administrator or root rights.
 
 On Windows: Open your Command Prompt or PowerShell as an Administrator.
 
-Usage
-Start the Application:
-Navigate to the project's root directory in your terminal and run:
+Enter : python -u "c:<the loaction where we have stored >\LoopBreakers-P4\app.py"
+
+You will see the visualisation has initialized.
 
 # On Windows (from Administrator PowerShell/CMD):
-streamlit run app.py
 
 View Visualizations:
 The main area of the application will display real-time updates of:
