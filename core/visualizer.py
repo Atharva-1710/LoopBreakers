@@ -79,4 +79,3 @@ class TerminalVisualizer:
             self.console.rule("[bold magenta]End of Analysis[/bold magenta]")
         else:
             self.console.print("\n[dim]Updating... (Ctrl+C to stop)[/dim]")
-
