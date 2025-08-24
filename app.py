@@ -5,6 +5,7 @@ import time
 from collections import defaultdict
 from scapy.all import sniff, IP, TCP, UDP, ICMP
 from rich import print # Import rich's print for styling
+import pandas as pd # Import pandas for CSV export
 
 from core.packet_processor import PacketProcessor
 from core.visualizer import TerminalVisualizer
@@ -29,13 +30,18 @@ def main():
         "-f", "--filter", default="",
         help="BPF filter for packet capture (e.g., 'tcp port 80', 'icmp')"
     )
-    # Corrected method: parse_args() instead of parse_argument()
+    parser.add_argument(
+        "--output-csv", default=None,
+        help="Path to CSV file to export results (e.g., results.csv)"
+    )
     args = parser.parse_args()
 
     print(f"[bold green]Starting Network Traffic Visualizer...[/bold green]")
     print(f"Interface: {args.interface if args.interface else 'All available'}")
     print(f"Filter: '{args.filter if args.filter else 'None'}'")
     print(f"Capturing {'infinite' if args.count == 0 else args.count} packets.")
+    if args.output_csv:
+        print(f"[bold blue]Results will be exported to: {args.output_csv}[/bold blue]")
     print("\n[bold yellow]Press Ctrl+C to stop.[/bold yellow]\n")
 
     packet_processor = PacketProcessor()
@@ -84,6 +90,32 @@ def main():
             final=True
         )
 
+        # Export to CSV if --output-csv argument was provided
+        if args.output_csv:
+            try:
+                protocol_df = packet_processor.get_protocol_df()
+                connections_df = packet_processor.get_connections_df()
+
+                with pd.ExcelWriter(args.output_csv, engine='xlsxwriter') as writer:
+                    if not protocol_df.empty:
+                        protocol_df.to_excel(writer, sheet_name='Protocol_Counts', index=False)
+                        print(f"[bold green]Protocol counts exported to '{args.output_csv}' (Sheet: Protocol_Counts)[/bold green]")
+                    else:
+                        print("[bold yellow]No protocol data to export.[/bold yellow]")
+
+                    if not connections_df.empty:
+                        connections_df.to_excel(writer, sheet_name='Top_Connections', index=False)
+                        print(f"[bold green]Top connections exported to '{args.output_csv}' (Sheet: Top_Connections)[/bold green]")
+                    else:
+                        print("[bold yellow]No connection data to export.[/bold yellow]")
+
+                if protocol_df.empty and connections_df.empty:
+                    print("[bold yellow]No data was collected, so no CSV file was created.[/bold yellow]")
+
+
+            except Exception as e:
+                print(f"[bold red]Error exporting to CSV: {e}[/bold red]")
+
+
 if __name__ == "__main__":
     main()
-

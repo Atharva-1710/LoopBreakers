@@ -64,6 +64,28 @@ class PacketProcessor:
 
         return connections[:top_n]
 
+    def get_protocol_df(self):
+        """
+        Returns protocol counts as a pandas DataFrame.
+        """
+        protocol_data = []
+        total_packets = sum(self.protocol_counts.values())
+        if total_packets > 0:
+            for protocol, count in self.protocol_counts.items():
+                percentage = (count / total_packets) * 100
+                protocol_data.append({"Protocol": protocol, "Count": count, "Percentage": f"{percentage:.2f}%"})
+        return pd.DataFrame(protocol_data)
+
+    def get_connections_df(self):
+        """
+        Returns top connections as a pandas DataFrame.
+        """
+        connections_data = []
+        for src, dst, count in self.get_top_sources_and_destinations(top_n=float('inf')): # Get all connections
+            connections_data.append({"Source IP": src, "Destination IP": dst, "Count": count})
+        return pd.DataFrame(connections_data)
+
+
     def reset_stats(self):
         """
         Resets all internal statistics.
